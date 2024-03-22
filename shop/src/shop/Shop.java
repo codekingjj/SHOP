@@ -118,9 +118,28 @@ public class Shop {
 		printWelcomeMessage(user);
 	}
 
-//	private void signOut() {
-//		
-//	}
+	private void signOut() {
+		checkLog();
+		if (!checkLog()) {
+			System.out.println("로그인 상태에서만 사용가능한 서비스 입니다.");
+			return;
+		}
+		String pw = inputString("비밀번호");
+		
+		User user = usermanager.findUserByCode(userCode);
+		
+		boolean result = false;
+		if (user.getPw().equals(pw)) {
+			result = usermanager.deleteUser(user);
+		}
+		String message = result ? "회원 탈퇴 완료" : "회원 탈퇴 실패";
+		if(result) {
+			userCode = 0;
+			log = 0;
+			usermanager.buyerCnt--;
+		}
+		System.out.println(message);
+	}
 
 	private void logIn() {
 		checkLog();
@@ -178,7 +197,7 @@ public class Shop {
 			signIn();
 			break;
 		case SIGN_OUT:
-//			signOut();
+			signOut();
 			break;
 		case LOG_IN:
 			logIn();
@@ -228,6 +247,8 @@ public class Shop {
 			printMenu();
 			showSubMenu(option());
 			showBuyer(); // 검수용
+			System.out.println(userCode);//검수용
+			System.out.println(usermanager.buyerCnt);//검수용
 		}
 	}
 }

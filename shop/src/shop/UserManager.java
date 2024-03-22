@@ -6,7 +6,7 @@ import java.util.Random;
 public class UserManager {
 	Random random = new Random();
 
-	private int buyerCnt;
+	public int buyerCnt;
 
 	ArrayList<User> list = new ArrayList<>();
 
@@ -25,7 +25,13 @@ public class UserManager {
 
 		return new User();
 	}
-
+	
+	public boolean deleteUser(User user) {
+		int code = user.getCode();
+		User target = getUserByUserCode(code);
+		return list.remove(target);
+	}
+	
 	private int generateUserCode() {
 		int code = 0;
 		while (true) {
@@ -74,7 +80,15 @@ public class UserManager {
 		}
 		return new User();
 	}
-
+	
+	private User getUserByUserCode(int code) {
+		for (User user : list) {
+			if (user.getCode() == code)
+				return user;
+		}
+		return new User();
+	}
+	
 	public ArrayList<User> printList() {
 		return this.list;
 	} // 검수용
