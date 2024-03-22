@@ -110,9 +110,22 @@ public class Shop {
 
 		printWelcomeMessage(user);
 	}
-
+	
+//	private void signOut() {
+//		
+//	}
+	
+	private void logIn() {
+		String id = inputString("아이디");
+		String pw = inputString("비밀번호");
+		
+		User user = usermanager.findUserByUserIdAndPw(id, pw);
+		
+		
+	}	
+	
 	private void printWelcomeMessage(User user) {
-		String message = user.getId() != null ? String.format("%s 회원님 환영합니다.", user.getName()) : "회원가입 실패";
+		String message = user.getId() != null ? String.format("%s(%d) 회원님 환영합니다.", user.getName(), user.getCode()) : "회원가입 실패";
 		System.out.println(message);
 	}
 
@@ -125,7 +138,7 @@ public class Shop {
 //			signOut();
 			break;
 		case LOG_IN:
-//			logIn();
+			logIn();
 			break;
 		case LOG_OUT:
 //			logOut();
