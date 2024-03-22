@@ -25,6 +25,8 @@ public class Shop {
 	final int CHECK_SALES = 4;
 
 	public boolean isRun;
+	private int userCode = 0;
+	private int log = 0;
 
 	private UserManager usermanager = new UserManager();
 	private ItemManager itemmanager = new ItemManager();
@@ -101,6 +103,11 @@ public class Shop {
 	}
 
 	private void signIn() {
+		checkLog();
+		if (checkLog()) {
+			System.out.println("로그아웃 상태에서 이용가능한 서비스 입니다.");
+			return;
+		}
 		String name = inputString("성함");
 		String phone = inputString("전화번호");
 		String id = inputString("아이디");
@@ -110,23 +117,59 @@ public class Shop {
 
 		printWelcomeMessage(user);
 	}
-	
+
 //	private void signOut() {
 //		
 //	}
-	
+
 	private void logIn() {
+		checkLog();
+		if (checkLog()) {
+			System.out.println("이미 로그인 상태입니다.");
+			return;
+		}
 		String id = inputString("아이디");
 		String pw = inputString("비밀번호");
-		
+
 		User user = usermanager.findUserByUserIdAndPw(id, pw);
-		
-		
-	}	
-	
-	private void printWelcomeMessage(User user) {
-		String message = user.getId() != null ? String.format("%s(%d) 회원님 환영합니다.", user.getName(), user.getCode()) : "회원가입 실패";
+
+		printLogInMessage(user);
+		if (user.getId() != null) {
+			userCode = user.getCode();
+			log = 1;
+		}
+
+	}
+
+	private void logOut() {
+		checkLog();
+		if (!checkLog()) {
+			System.out.println("이미 로그아웃 상태입니다.");
+			return;
+		}
+
+		userCode = 0;
+		log = 0;
+		System.out.println("로그아웃 되었습니다.");
+	}
+
+	private void printLogInMessage(User user) {
+		String message = user.getId() != null ? String.format("%s(%d) 회원님 로그인 되었습니다.", user.getName(), user.getCode())
+				: "로그인 실패";
 		System.out.println(message);
+	}
+
+	private void printWelcomeMessage(User user) {
+		String message = user.getId() != null ? String.format("%s(%d) 회원님 환영합니다.", user.getName(), user.getCode())
+				: "회원가입 실패";
+		System.out.println(message);
+	}
+
+	private boolean checkLog() {
+		if (log == 1) {
+			return true;
+		}
+		return false;
 	}
 
 	private void runBuyerMenu(int option) {
@@ -141,7 +184,7 @@ public class Shop {
 			logIn();
 			break;
 		case LOG_OUT:
-//			logOut();
+			logOut();
 			break;
 		case SHOPPING:
 //			shopping();

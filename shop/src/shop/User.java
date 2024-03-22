@@ -16,19 +16,19 @@ public class User {
 		this.id = id;
 		this.pw = pw;
 	}
-	
+
 	public int getCode() {
 		return this.code;
 	}
-	
+
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public String getPw() {
 		return this.pw;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
